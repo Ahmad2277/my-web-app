@@ -120,7 +120,7 @@ function Upload() {
         userPrompt || "");
 
       const response = await fetch(
-        'http://localhost:8000/analyze',
+        'https://my-backend-ivrg.onrender.com/analyze',
         {
           method: 'POST',
           body: formData

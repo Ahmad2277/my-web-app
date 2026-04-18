@@ -78,7 +78,7 @@ function Login() {
           result.user.uid);
 
         const response = await fetch(
-          'http://localhost:8000/auth/google',
+          'https://my-backend-ivrg.onrender.com/auth/google',
           {
             method: 'POST',
             body: formData
