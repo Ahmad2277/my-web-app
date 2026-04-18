@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import {
+  Link, useNavigate
+} from 'react-router-dom';
 import { loginUser } from '../services/api';
-import { signInWithGoogle } from '../firebase';
+import { signInWithGoogle }
+  from '../firebase';
+
+// ─────────────────────────────────────────
+// Production Backend URL
+// ─────────────────────────────────────────
+const BACKEND_URL =
+  'https://my-backend-ivrg.onrender.com';
 
 function Login() {
   const navigate = useNavigate();
@@ -12,7 +21,6 @@ function Login() {
   const [googleLoading, setGoogleLoading] =
     useState(false);
 
-  // ── Regular Login ──
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
@@ -61,7 +69,6 @@ function Login() {
     }
   };
 
-  // ── Google Login ──
   const handleGoogleLogin = async () => {
     setGoogleLoading(true);
     setError('');
@@ -71,14 +78,18 @@ function Login() {
 
       if (result.success) {
         const formData = new FormData();
-        formData.append('name', result.user.name);
-        formData.append('email',
-          result.user.email);
-        formData.append('google_uid',
-          result.user.uid);
+        formData.append(
+          'name', result.user.name
+        );
+        formData.append(
+          'email', result.user.email
+        );
+        formData.append(
+          'google_uid', result.user.uid
+        );
 
         const response = await fetch(
-          'https://my-backend-ivrg.onrender.com/auth/google',
+          `${BACKEND_URL}/auth/google`,
           {
             method: 'POST',
             body: formData
@@ -120,7 +131,8 @@ function Login() {
   const inputStyle = {
     width: '100%',
     padding: '0.75rem 1rem',
-    border: '1.5px solid rgba(212,175,55,0.2)',
+    border:
+      '1.5px solid rgba(212,175,55,0.2)',
     borderRadius: '8px',
     fontSize: '0.95rem',
     outline: 'none',
@@ -172,7 +184,8 @@ function Login() {
           background: '#1A1A1A',
           borderRadius: '16px',
           padding: '2rem',
-          border: '1px solid rgba(212,175,55,0.2)'
+          border:
+            '1px solid rgba(212,175,55,0.2)'
         }}>
 
           <h2 style={{
@@ -189,13 +202,15 @@ function Login() {
           {/* Error */}
           {error && (
             <div style={{
-              background: 'rgba(239,68,68,0.1)',
+              background:
+                'rgba(239,68,68,0.1)',
               color: '#f87171',
               padding: '0.75rem 1rem',
               borderRadius: '8px',
               marginBottom: '1rem',
               fontSize: '0.9rem',
-              border: '1px solid rgba(239,68,68,0.3)'
+              border:
+                '1px solid rgba(239,68,68,0.3)'
             }}>
               ⚠️ {error}
             </div>
@@ -215,13 +230,13 @@ function Login() {
               borderRadius: '50px',
               fontSize: '0.95rem',
               fontWeight: '600',
-              cursor: 'pointer',
+              cursor: googleLoading
+                ? 'not-allowed' : 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               gap: '0.75rem',
-              marginBottom: '1.25rem',
-              transition: 'all 0.3s'
+              marginBottom: '1.25rem'
             }}
           >
             <span style={{
@@ -245,8 +260,9 @@ function Login() {
           }}>
             <div style={{
               flex: 1, height: '1px',
-              background: 'rgba(212,175,55,0.15)'
-            }}></div>
+              background:
+                'rgba(212,175,55,0.15)'
+            }} />
             <span style={{
               fontSize: '0.8rem',
               color: '#555555'
@@ -255,15 +271,17 @@ function Login() {
             </span>
             <div style={{
               flex: 1, height: '1px',
-              background: 'rgba(212,175,55,0.15)'
-            }}></div>
+              background:
+                'rgba(212,175,55,0.15)'
+            }} />
           </div>
 
           {/* Form */}
           <form onSubmit={handleLogin}>
 
-            {/* Email */}
-            <div style={{ marginBottom: '1rem' }}>
+            <div style={{
+              marginBottom: '1rem'
+            }}>
               <label style={{
                 display: 'block',
                 fontWeight: '600',
@@ -289,8 +307,9 @@ function Login() {
               />
             </div>
 
-            {/* Password */}
-            <div style={{ marginBottom: '1.5rem' }}>
+            <div style={{
+              marginBottom: '1.5rem'
+            }}>
               <label style={{
                 display: 'block',
                 fontWeight: '600',
@@ -316,7 +335,6 @@ function Login() {
               />
             </div>
 
-            {/* Submit */}
             <button
               type="submit"
               disabled={loading}
@@ -342,7 +360,6 @@ function Login() {
 
           </form>
 
-          {/* Register Link */}
           <p style={{
             textAlign: 'center',
             marginTop: '1.25rem',
@@ -359,7 +376,6 @@ function Login() {
             </Link>
           </p>
 
-          {/* Back to Landing */}
           <p style={{
             textAlign: 'center',
             marginTop: '0.75rem'
@@ -374,6 +390,27 @@ function Login() {
           </p>
 
         </div>
+
+        {/* Footer */}
+        <p style={{
+          textAlign: 'center',
+          color: '#555555',
+          fontSize: '0.75rem',
+          marginTop: '1.5rem'
+        }}>
+          RenoVision — Final Year Project |
+          Lahore Garrison University | BSCS 2024
+        </p>
+        <p style={{
+          textAlign: 'center',
+          color: '#D4AF37',
+          fontSize: '0.75rem',
+          marginTop: '0.25rem',
+          fontWeight: '600'
+        }}>
+          Made by Ahmad Raza & Tabeel John
+        </p>
+
       </div>
     </div>
   );

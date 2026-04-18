@@ -1,6 +1,10 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://my-backend-ivrg.onrender.com';
+// ─────────────────────────────────────────
+// Production Backend URL
+// ─────────────────────────────────────────
+const BASE_URL =
+  'https://my-backend-ivrg.onrender.com';
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -100,9 +104,6 @@ export const analyzeRoom = async (
 ) => {
   const token = getToken();
 
-  console.log('Token found:', token
-    ? 'YES' : 'NO');
-
   if (!token) {
     throw new Error(
       'Not logged in. Please login again.'
@@ -114,13 +115,9 @@ export const analyzeRoom = async (
   formData.append('budget', String(budget));
   formData.append('style', style);
   formData.append('token', token);
-  formData.append('user_prompt',
-    userPrompt || "");
-
-  console.log('Sending analyze request...');
-  console.log('Budget:', budget);
-  console.log('Style:', style);
-  console.log('Prompt:', userPrompt);
+  formData.append(
+    'user_prompt', userPrompt || ""
+  );
 
   const response = await api.post(
     '/analyze', formData,
@@ -129,26 +126,6 @@ export const analyzeRoom = async (
         'Content-Type': 'multipart/form-data'
       }
     }
-  );
-  return response.data;
-};
-
-// ─────────────────────────────────────────
-// Get recommendations
-// ─────────────────────────────────────────
-export const getRecommendations = async (
-  roomType, furniture, budget, style
-) => {
-  const formData = new FormData();
-  formData.append('room_type', roomType);
-  formData.append(
-    'furniture', furniture.join(',')
-  );
-  formData.append('budget', budget);
-  formData.append('style', style);
-
-  const response = await api.post(
-    '/recommend', formData
   );
   return response.data;
 };

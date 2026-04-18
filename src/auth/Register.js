@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import {
+  Link, useNavigate
+} from 'react-router-dom';
 import { registerUser } from '../services/api';
-import { signInWithGoogle } from '../firebase';
+import { signInWithGoogle }
+  from '../firebase';
+
+// ─────────────────────────────────────────
+// Production Backend URL
+// ─────────────────────────────────────────
+const BACKEND_URL =
+  'https://my-backend-ivrg.onrender.com';
 
 function Register() {
   const navigate = useNavigate();
@@ -15,7 +24,6 @@ function Register() {
   const [googleLoading, setGoogleLoading] =
     useState(false);
 
-  // ── Regular Register ──
   const handleRegister = async (e) => {
     e.preventDefault();
     setError('');
@@ -61,7 +69,8 @@ function Register() {
         setSuccess(
           'Account created! Redirecting...'
         );
-        setTimeout(() => navigate('/home'), 1500);
+        setTimeout(() =>
+          navigate('/home'), 1500);
       }
     } catch (err) {
       if (err.response?.data?.error) {
@@ -74,7 +83,6 @@ function Register() {
     }
   };
 
-  // ── Google Register ──
   const handleGoogleLogin = async () => {
     setGoogleLoading(true);
     setError('');
@@ -84,14 +92,18 @@ function Register() {
 
       if (result.success) {
         const formData = new FormData();
-        formData.append('name', result.user.name);
-        formData.append('email',
-          result.user.email);
-        formData.append('google_uid',
-          result.user.uid);
+        formData.append(
+          'name', result.user.name
+        );
+        formData.append(
+          'email', result.user.email
+        );
+        formData.append(
+          'google_uid', result.user.uid
+        );
 
         const response = await fetch(
-          'https://my-backend-ivrg.onrender.com/auth/google',
+          `${BACKEND_URL}/auth/google`,
           {
             method: 'POST',
             body: formData
@@ -131,7 +143,8 @@ function Register() {
   const inputStyle = {
     width: '100%',
     padding: '0.75rem 1rem',
-    border: '1.5px solid rgba(212,175,55,0.2)',
+    border:
+      '1.5px solid rgba(212,175,55,0.2)',
     borderRadius: '8px',
     fontSize: '0.95rem',
     outline: 'none',
@@ -191,7 +204,8 @@ function Register() {
           background: '#1A1A1A',
           borderRadius: '16px',
           padding: '2rem',
-          border: '1px solid rgba(212,175,55,0.2)'
+          border:
+            '1px solid rgba(212,175,55,0.2)'
         }}>
 
           <h2 style={{
@@ -204,10 +218,10 @@ function Register() {
             Register
           </h2>
 
-          {/* Error */}
           {error && (
             <div style={{
-              background: 'rgba(239,68,68,0.1)',
+              background:
+                'rgba(239,68,68,0.1)',
               color: '#f87171',
               padding: '0.75rem 1rem',
               borderRadius: '8px',
@@ -220,7 +234,6 @@ function Register() {
             </div>
           )}
 
-          {/* Success */}
           {success && (
             <div style={{
               background:
@@ -282,7 +295,7 @@ function Register() {
               flex: 1, height: '1px',
               background:
                 'rgba(212,175,55,0.15)'
-            }}></div>
+            }} />
             <span style={{
               fontSize: '0.8rem',
               color: '#555555'
@@ -293,7 +306,7 @@ function Register() {
               flex: 1, height: '1px',
               background:
                 'rgba(212,175,55,0.15)'
-            }}></div>
+            }} />
           </div>
 
           {/* Form */}
@@ -442,6 +455,26 @@ function Register() {
           </p>
 
         </div>
+
+        <p style={{
+          textAlign: 'center',
+          color: '#555555',
+          fontSize: '0.75rem',
+          marginTop: '1.5rem'
+        }}>
+          RenoVision — Final Year Project |
+          Lahore Garrison University | BSCS 2024
+        </p>
+        <p style={{
+          textAlign: 'center',
+          color: '#D4AF37',
+          fontSize: '0.75rem',
+          marginTop: '0.25rem',
+          fontWeight: '600'
+        }}>
+          Made by Ahmad Raza & Tabeel John
+        </p>
+
       </div>
     </div>
   );
