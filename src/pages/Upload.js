@@ -119,13 +119,18 @@ function Upload() {
       formData.append('user_prompt',
         userPrompt || "");
 
-      const response = await fetch(
-        'https://my-backend-ivrg.onrender.com/analyze',
-        {
-          method: 'POST',
-          body: formData
-        }
-      );
+      const controller = new AbortController();
+const timeoutId = setTimeout(() => controller.abort(), 180000);
+
+const response = await fetch(
+  'https://my-backend-ivrg.onrender.com/analyze',
+  {
+    method: 'POST',
+    body: formData,
+    signal: controller.signal
+  }
+);
+clearTimeout(timeoutId);
 
       clearTimeout(t1);
       clearTimeout(t2);
@@ -178,7 +183,7 @@ function Upload() {
         err.message.includes('fetch')
       ) {
         setError(
-          'Cannot connect to backend. Make sure server is running.'
+          '⏳ Backend is waking up (free tier). Please wait 60 seconds and try again.'
         );
       } else {
         setError(
