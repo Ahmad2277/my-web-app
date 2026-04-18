@@ -19,7 +19,7 @@ function App() {
     useState('checking');
 
   useEffect(() => {
-    fetch('http://localhost:8000/')
+    fetch('https://my-backend-ivrg.onrender.com')
       .then(res => res.json())
       .then(() => setBackendStatus('connected'))
       .catch(() =>
