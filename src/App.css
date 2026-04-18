@@ -1,0 +1,181 @@
+.App {
+  min-height: 100vh;
+  background: var(--black);
+}
+
+/* ── Navbar ── */
+.navbar {
+  background: rgba(10,10,10,0.95);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-gold);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(20px);
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--white-soft);
+  text-decoration: none;
+  letter-spacing: -0.5px;
+}
+
+.navbar-brand span {
+  color: var(--gold);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-link {
+  color: var(--gray-light);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.2s;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.nav-link:hover {
+  color: var(--gold);
+}
+
+/* ── Buttons ── */
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  letter-spacing: 0.3px;
+}
+
+.btn-primary {
+  background: linear-gradient(
+    135deg, var(--gold-light),
+    var(--gold), var(--gold-dark)
+  );
+  color: var(--black);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px var(--gold-glow);
+}
+
+.btn-secondary {
+  background: var(--black-3);
+  color: var(--white-soft);
+  border: 1px solid var(--border-gold);
+}
+
+.btn-secondary:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.btn-accent {
+  background: transparent;
+  color: var(--gold);
+  border: 1.5px solid var(--gold);
+}
+
+.btn-accent:hover {
+  background: rgba(212,175,55,0.1);
+  transform: translateY(-2px);
+}
+
+/* ── Cards ── */
+.card {
+  background: var(--black-3);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  border: 1px solid var(--border-gold);
+  transition: border-color 0.3s;
+}
+
+.card:hover {
+  border-color: var(--border-gold-hover);
+}
+
+/* ── Loading Spinner ── */
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid var(--black-4);
+  border-top: 3px solid var(--gold);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ── Badges ── */
+.badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge-high {
+  background: rgba(239,68,68,0.15);
+  color: #f87171;
+  border: 1px solid rgba(239,68,68,0.3);
+}
+
+.badge-medium {
+  background: rgba(212,175,55,0.15);
+  color: var(--gold);
+  border: 1px solid var(--border-gold);
+}
+
+.badge-low {
+  background: rgba(16,185,129,0.15);
+  color: #34d399;
+  border: 1px solid rgba(16,185,129,0.3);
+}
+
+/* ── Page Container ── */
+.page-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+/* ── Mobile Responsive ── */
+@media (max-width: 600px) {
+  .navbar {
+    padding: 0.75rem 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .navbar-brand { font-size: 1.2rem; }
+  .btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-container { padding: 1rem; }
+}

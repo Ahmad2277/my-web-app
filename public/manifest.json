@@ -1,0 +1,19 @@
+{
+  "short_name": "RenoVision",
+  "name": "RenoVision - AI Interior Planner",
+  "description": "AI-powered smart interior renovation planner using Computer Vision and Explainable AI",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#2563eb",
+  "background_color": "#ffffff",
+  "orientation": "portrait",
+  "scope": "/",
+  "lang": "en"
+}

@@ -1,0 +1,72 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma,
+    Geneva, Verdana, sans-serif;
+  background-color: #0A0A0A;
+  color: #F5F5F0;
+}
+
+:root {
+  /* ── Gold Theme ── */
+  --gold: #D4AF37;
+  --gold-light: #F5D76E;
+  --gold-dark: #B8960C;
+  --gold-glow: rgba(212, 175, 55, 0.3);
+
+  /* ── Black Theme ── */
+  --black: #0A0A0A;
+  --black-2: #111111;
+  --black-3: #1A1A1A;
+  --black-4: #222222;
+  --black-5: #2A2A2A;
+
+  /* ── Text ── */
+  --white-soft: #F5F5F0;
+  --gray-light: #888888;
+  --gray-mid: #555555;
+  --gray-dark: #333333;
+
+  /* ── Borders ── */
+  --border-gold: rgba(212, 175, 55, 0.2);
+  --border-gold-hover: rgba(212, 175, 55, 0.4);
+
+  /* ── Legacy vars (kept for compatibility) ── */
+  --primary: #D4AF37;
+  --primary-dark: #B8960C;
+  --secondary: #1A1A1A;
+  --accent: #D4AF37;
+  --text-primary: #F5F5F0;
+  --text-secondary: #888888;
+  --border: rgba(212, 175, 55, 0.2);
+  --white: #F5F5F0;
+  --shadow: 0 4px 20px rgba(0,0,0,0.5);
+  --shadow-lg: 0 10px 40px rgba(0,0,0,0.6);
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track {
+  background: var(--black-2);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--gold-dark);
+  border-radius: 3px;
+}
+
+img { max-width: 100%; height: auto; }
+button { min-height: 44px; }
+
+/* ── Mobile Responsive ── */
+@media (max-width: 480px) {
+  html { font-size: 14px; }
+}
+@media (max-width: 768px) {
+  html { font-size: 15px; }
+}
