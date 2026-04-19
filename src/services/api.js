@@ -1,19 +1,13 @@
 import axios from 'axios';
 
-// ─────────────────────────────────────────
-// Production Backend URL
-// ─────────────────────────────────────────
 const BASE_URL =
-  'https://my-backend-ivrg.onrender.com';
+  'https://ahmad3351-renovision.hf.space';
 
 const api = axios.create({
   baseURL: BASE_URL,
   timeout: 180000,
 });
 
-// ─────────────────────────────────────────
-// Get token from localStorage
-// ─────────────────────────────────────────
 export const getToken = () => {
   try {
     const user = localStorage.getItem(
@@ -29,9 +23,6 @@ export const getToken = () => {
   }
 };
 
-// ─────────────────────────────────────────
-// Check if user is logged in
-// ─────────────────────────────────────────
 export const isLoggedIn = () => {
   try {
     const user = localStorage.getItem(
@@ -45,9 +36,6 @@ export const isLoggedIn = () => {
   }
 };
 
-// ─────────────────────────────────────────
-// Register new user
-// ─────────────────────────────────────────
 export const registerUser = async (
   name, email, password
 ) => {
@@ -55,32 +43,24 @@ export const registerUser = async (
   formData.append('name', name);
   formData.append('email', email);
   formData.append('password', password);
-
   const response = await api.post(
     '/auth/register', formData
   );
   return response.data;
 };
 
-// ─────────────────────────────────────────
-// Login user
-// ─────────────────────────────────────────
 export const loginUser = async (
   email, password
 ) => {
   const formData = new FormData();
   formData.append('email', email);
   formData.append('password', password);
-
   const response = await api.post(
     '/auth/login', formData
   );
   return response.data;
 };
 
-// ─────────────────────────────────────────
-// Google OAuth login
-// ─────────────────────────────────────────
 export const googleAuthLogin = async (
   name, email, googleUid
 ) => {
@@ -88,16 +68,12 @@ export const googleAuthLogin = async (
   formData.append('name', name);
   formData.append('email', email);
   formData.append('google_uid', googleUid);
-
   const response = await api.post(
     '/auth/google', formData
   );
   return response.data;
 };
 
-// ─────────────────────────────────────────
-// Analyze room image
-// ─────────────────────────────────────────
 export const analyzeRoom = async (
   imageFile, budget, style,
   userPrompt = ""

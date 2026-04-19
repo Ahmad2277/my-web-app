@@ -1,16 +1,12 @@
 import React, { useState } from 'react';
-import {
-  Link, useNavigate
-} from 'react-router-dom';
+import { Link, useNavigate }
+  from 'react-router-dom';
 import { loginUser } from '../services/api';
 import { signInWithGoogle }
   from '../firebase';
 
-// ─────────────────────────────────────────
-// Production Backend URL
-// ─────────────────────────────────────────
 const BACKEND_URL =
-  'https://my-backend-ivrg.onrender.com';
+  'https://ahmad3351-renovision.hf.space';
 
 function Login() {
   const navigate = useNavigate();
@@ -38,12 +34,10 @@ function Login() {
     }
 
     setLoading(true);
-
     try {
       const data = await loginUser(
         email, password
       );
-
       if (data.success) {
         localStorage.setItem(
           'renovisionUser',
@@ -72,28 +66,20 @@ function Login() {
   const handleGoogleLogin = async () => {
     setGoogleLoading(true);
     setError('');
-
     try {
       const result = await signInWithGoogle();
-
       if (result.success) {
         const formData = new FormData();
-        formData.append(
-          'name', result.user.name
-        );
-        formData.append(
-          'email', result.user.email
-        );
-        formData.append(
-          'google_uid', result.user.uid
-        );
+        formData.append('name',
+          result.user.name);
+        formData.append('email',
+          result.user.email);
+        formData.append('google_uid',
+          result.user.uid);
 
         const response = await fetch(
           `${BACKEND_URL}/auth/google`,
-          {
-            method: 'POST',
-            body: formData
-          }
+          { method: 'POST', body: formData }
         );
         const data = await response.json();
 
@@ -120,9 +106,7 @@ function Login() {
         );
       }
     } catch (err) {
-      setError(
-        'Google login failed. Try again.'
-      );
+      setError('Google login failed. Try again.');
     } finally {
       setGoogleLoading(false);
     }
@@ -131,13 +115,13 @@ function Login() {
   const inputStyle = {
     width: '100%',
     padding: '0.75rem 1rem',
-    border:
-      '1.5px solid rgba(212,175,55,0.2)',
+    border: '1.5px solid rgba(212,175,55,0.2)',
     borderRadius: '8px',
     fontSize: '0.95rem',
     outline: 'none',
     backgroundColor: '#222222',
-    color: '#F5F5F0'
+    color: '#F5F5F0',
+    boxSizing: 'border-box'
   };
 
   return (
@@ -154,7 +138,6 @@ function Login() {
         maxWidth: '420px'
       }}>
 
-        {/* Logo */}
         <div style={{
           textAlign: 'center',
           marginBottom: '2rem'
@@ -163,7 +146,8 @@ function Login() {
             fontSize: '2.5rem',
             fontWeight: '900',
             color: '#F5F5F0',
-            letterSpacing: '-1px'
+            letterSpacing: '-1px',
+            margin: 0
           }}>
             Reno
             <span style={{ color: '#D4AF37' }}>
@@ -179,13 +163,11 @@ function Login() {
           </p>
         </div>
 
-        {/* Card */}
         <div style={{
           background: '#1A1A1A',
           borderRadius: '16px',
           padding: '2rem',
-          border:
-            '1px solid rgba(212,175,55,0.2)'
+          border: '1px solid rgba(212,175,55,0.2)'
         }}>
 
           <h2 style={{
@@ -199,11 +181,9 @@ function Login() {
             Sign In
           </h2>
 
-          {/* Error */}
           {error && (
             <div style={{
-              background:
-                'rgba(239,68,68,0.1)',
+              background: 'rgba(239,68,68,0.1)',
               color: '#f87171',
               padding: '0.75rem 1rem',
               borderRadius: '8px',
@@ -260,8 +240,7 @@ function Login() {
           }}>
             <div style={{
               flex: 1, height: '1px',
-              background:
-                'rgba(212,175,55,0.15)'
+              background: 'rgba(212,175,55,0.15)'
             }} />
             <span style={{
               fontSize: '0.8rem',
@@ -271,17 +250,12 @@ function Login() {
             </span>
             <div style={{
               flex: 1, height: '1px',
-              background:
-                'rgba(212,175,55,0.15)'
+              background: 'rgba(212,175,55,0.15)'
             }} />
           </div>
 
-          {/* Form */}
           <form onSubmit={handleLogin}>
-
-            <div style={{
-              marginBottom: '1rem'
-            }}>
+            <div style={{ marginBottom: '1rem' }}>
               <label style={{
                 display: 'block',
                 fontWeight: '600',
@@ -307,9 +281,7 @@ function Login() {
               />
             </div>
 
-            <div style={{
-              marginBottom: '1.5rem'
-            }}>
+            <div style={{ marginBottom: '1.5rem' }}>
               <label style={{
                 display: 'block',
                 fontWeight: '600',
@@ -357,14 +329,14 @@ function Login() {
                 ? '⏳ Signing in...'
                 : 'Sign In'}
             </button>
-
           </form>
 
           <p style={{
             textAlign: 'center',
             marginTop: '1.25rem',
             fontSize: '0.9rem',
-            color: '#888888'
+            color: '#888888',
+            margin: '1.25rem 0 0.75rem'
           }}>
             Don't have an account?{' '}
             <Link to="/register" style={{
@@ -378,7 +350,7 @@ function Login() {
 
           <p style={{
             textAlign: 'center',
-            marginTop: '0.75rem'
+            margin: 0
           }}>
             <Link to="/" style={{
               color: '#555555',
@@ -391,7 +363,6 @@ function Login() {
 
         </div>
 
-        {/* Footer */}
         <p style={{
           textAlign: 'center',
           color: '#555555',

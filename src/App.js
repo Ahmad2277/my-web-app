@@ -14,11 +14,8 @@ import Register from './auth/Register';
 import ProtectedRoute from './ProtectedRoute';
 import './App.css';
 
-// ─────────────────────────────────────────
-// Production Backend URL
-// ─────────────────────────────────────────
 const BACKEND_URL =
-  'https://my-backend-ivrg.onrender.com';
+  'https://ahmad3351-renovision.hf.space';
 
 function App() {
   const [backendStatus, setBackendStatus] =
@@ -30,10 +27,15 @@ function App() {
 
   const checkBackend = async () => {
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(
+        () => controller.abort(), 15000
+      );
       const res = await fetch(
         `${BACKEND_URL}/`,
-        { signal: AbortSignal.timeout(10000) }
+        { signal: controller.signal }
       );
+      clearTimeout(timeoutId);
       const data = await res.json();
       if (data.message) {
         setBackendStatus('connected');
@@ -48,7 +50,6 @@ function App() {
   return (
     <Router>
 
-      {/* Backend Status Bar */}
       {backendStatus === 'disconnected' && (
         <div style={{
           background: '#1a0a0a',
@@ -82,8 +83,6 @@ function App() {
 
       <div className="App">
         <Routes>
-
-          {/* Public routes */}
           <Route
             path="/"
             element={<Landing />}
@@ -96,8 +95,6 @@ function App() {
             path="/register"
             element={<Register />}
           />
-
-          {/* Protected routes */}
           <Route
             path="/home"
             element={
@@ -130,9 +127,9 @@ function App() {
               </ProtectedRoute>
             }
           />
-
         </Routes>
       </div>
+
     </Router>
   );
 }
