@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // api.js  —  drop this in your frontend src/ folder
 // Handles HuggingFace cold-start wake-up + retry logic
 
@@ -6,6 +7,10 @@
 // e.g. "https://your-username-renovision.hf.space"
 // ─────────────────────────────────────────
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://ahmad3351-renovision.hf.space";
+=======
+
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://ahmad3351-renovision.hf.space/";
+>>>>>>> 2de239ba797594b134c1ad111d92a623ab1eebbb
 
 const WAKE_TIMEOUT_MS  = 90_000;   // max 90s to wait for HF cold start
 const WAKE_POLL_MS     = 4_000;    // ping every 4 seconds
@@ -200,4 +205,8 @@ export async function googleAuth({ name, email, google_uid }) {
 export async function getUsers() {
   const res = await fetch(`${BACKEND_URL}/auth/users`);
   return res.json();
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 2de239ba797594b134c1ad111d92a623ab1eebbb
