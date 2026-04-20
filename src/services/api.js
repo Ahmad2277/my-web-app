@@ -5,7 +5,7 @@
 // PUT YOUR HUGGING FACE BACKEND URL HERE
 // e.g. "https://your-username-renovision.hf.space"
 // ─────────────────────────────────────────
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://YOUR-HF-SPACE-URL.hf.space";
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://ahmad3351-renovision.hf.space";
 
 const WAKE_TIMEOUT_MS  = 90_000;   // max 90s to wait for HF cold start
 const WAKE_POLL_MS     = 4_000;    // ping every 4 seconds
