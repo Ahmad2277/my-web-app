@@ -300,7 +300,7 @@ function Login() {
           RenoVision — Final Year Project | Lahore Garrison University | BSCS 2024
         </p>
         <p style={{ textAlign: 'center', color: '#D4AF37', fontSize: '0.75rem', marginTop: '0.25rem', fontWeight: '600' }}>
-          Made by Ahmad Raza & Tabeel John
+          Build by Ahmad Raza & Tabeel John
         </p>
       </div>
     </div>
