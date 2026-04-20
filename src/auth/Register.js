@@ -1,16 +1,10 @@
+// Register.js
 import React, { useState } from 'react';
-import {
-  Link, useNavigate
-} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { registerUser } from '../services/api';
-import { signInWithGoogle }
-  from '../firebase';
+import { signInWithGoogle } from '../firebase';
 
-// ─────────────────────────────────────────
-// Production Backend URL
-// ─────────────────────────────────────────
-const BACKEND_URL =
-  'https://ahmad3351-renovision.hf.space';
+const BACKEND_URL = 'https://ahmad3351-renovision.hf.space';
 
 function Register() {
   const navigate = useNavigate();
@@ -21,16 +15,14 @@ function Register() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
-  const [googleLoading, setGoogleLoading] =
-    useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
 
   const handleRegister = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess('');
 
-    if (!name || !email ||
-        !password || !confirm) {
+    if (!name || !email || !password || !confirm) {
       setError('Please fill in all fields');
       return;
     }
@@ -39,9 +31,7 @@ function Register() {
       return;
     }
     if (password.length < 6) {
-      setError(
-        'Password must be at least 6 characters'
-      );
+      setError('Password must be at least 6 characters');
       return;
     }
     if (password !== confirm) {
@@ -50,34 +40,53 @@ function Register() {
     }
 
     setLoading(true);
-
     try {
-      const data = await registerUser(
-        name, email, password
-      );
+      const data = await registerUser(name, email, password);
+
+      console.log('Register response:', data); // debug
 
       if (data.success) {
+        // ── FIXED: safe fallbacks so name is never undefined ──
+        const userName =
+          data.user?.name ||
+          data.name ||
+          name ||           // fallback to what user typed
+          email.split('@')[0] ||
+          'User';
+
+        const userEmail =
+          data.user?.email ||
+          data.email ||
+          email;
+
+        const token =
+          data.token ||
+          data.access_token ||
+          '';
+
         localStorage.setItem(
           'renovisionUser',
           JSON.stringify({
-            name: data.user.name,
-            email: data.user.email,
-            token: data.token,
+            name: userName,
+            email: userEmail,
+            token: token,
             loginMethod: 'email'
           })
         );
-        setSuccess(
-          'Account created! Redirecting...'
+        setSuccess('Account created! Redirecting...');
+        setTimeout(() => navigate('/home'), 1500);
+      } else {
+        // ── FIXED: properly show backend error message ──
+        setError(
+          data.error ||
+          data.message ||
+          data.detail ||
+          'Registration failed. Please try again.'
         );
-        setTimeout(() =>
-          navigate('/home'), 1500);
       }
     } catch (err) {
-      if (err.response?.data?.error) {
-        setError(err.response.data.error);
-      } else {
-        setError('Registration failed.');
-      }
+      console.error('Register error:', err);
+      setError('Registration failed. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -86,54 +95,48 @@ function Register() {
   const handleGoogleLogin = async () => {
     setGoogleLoading(true);
     setError('');
-
     try {
       const result = await signInWithGoogle();
-
       if (result.success) {
         const formData = new FormData();
-        formData.append(
-          'name', result.user.name
-        );
-        formData.append(
-          'email', result.user.email
-        );
-        formData.append(
-          'google_uid', result.user.uid
-        );
+        formData.append('name', result.user.name);
+        formData.append('email', result.user.email);
+        formData.append('google_uid', result.user.uid);
 
         const response = await fetch(
           `${BACKEND_URL}/auth/google`,
-          {
-            method: 'POST',
-            body: formData
-          }
+          { method: 'POST', body: formData }
         );
         const data = await response.json();
 
+        console.log('Google register response:', data); // debug
+
         if (data.success) {
+          const userName =
+            data.user?.name ||
+            result.user.name ||
+            result.user.email?.split('@')[0] ||
+            'User';
+
           localStorage.setItem(
             'renovisionUser',
             JSON.stringify({
-              name: data.user.name,
-              email: data.user.email,
-              token: data.token,
-              photo: result.user.photo,
+              name: userName,
+              email: data.user?.email || result.user.email,
+              token: data.token || '',
+              photo: result.user.photo || '',
               loginMethod: 'google'
             })
           );
           navigate('/home');
         } else {
-          setError(
-            data.error || 'Google login failed'
-          );
+          setError(data.error || 'Google login failed');
         }
       } else {
-        setError(
-          result.error || 'Google login failed'
-        );
+        setError(result.error || 'Google login failed');
       }
     } catch (err) {
+      console.error('Google register error:', err);
       setError('Google login failed.');
     } finally {
       setGoogleLoading(false);
@@ -143,8 +146,7 @@ function Register() {
   const inputStyle = {
     width: '100%',
     padding: '0.75rem 1rem',
-    border:
-      '1.5px solid rgba(212,175,55,0.2)',
+    border: '1.5px solid rgba(212,175,55,0.2)',
     borderRadius: '8px',
     fontSize: '0.95rem',
     outline: 'none',
@@ -169,32 +171,19 @@ function Register() {
       justifyContent: 'center',
       padding: '1rem'
     }}>
-      <div style={{
-        width: '100%',
-        maxWidth: '420px'
-      }}>
+      <div style={{ width: '100%', maxWidth: '420px' }}>
 
         {/* Logo */}
-        <div style={{
-          textAlign: 'center',
-          marginBottom: '2rem'
-        }}>
+        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
           <h1 style={{
             fontSize: '2.5rem',
             fontWeight: '900',
             color: '#F5F5F0',
             letterSpacing: '-1px'
           }}>
-            Reno
-            <span style={{ color: '#D4AF37' }}>
-              Vision
-            </span>
+            Reno<span style={{ color: '#D4AF37' }}>Vision</span>
           </h1>
-          <p style={{
-            color: '#888888',
-            marginTop: '0.5rem',
-            fontSize: '0.9rem'
-          }}>
+          <p style={{ color: '#888888', marginTop: '0.5rem', fontSize: '0.9rem' }}>
             Create your free account
           </p>
         </div>
@@ -204,10 +193,8 @@ function Register() {
           background: '#1A1A1A',
           borderRadius: '16px',
           padding: '2rem',
-          border:
-            '1px solid rgba(212,175,55,0.2)'
+          border: '1px solid rgba(212,175,55,0.2)'
         }}>
-
           <h2 style={{
             fontSize: '1.4rem',
             fontWeight: '800',
@@ -220,15 +207,13 @@ function Register() {
 
           {error && (
             <div style={{
-              background:
-                'rgba(239,68,68,0.1)',
+              background: 'rgba(239,68,68,0.1)',
               color: '#f87171',
               padding: '0.75rem 1rem',
               borderRadius: '8px',
               marginBottom: '1rem',
               fontSize: '0.9rem',
-              border:
-                '1px solid rgba(239,68,68,0.3)'
+              border: '1px solid rgba(239,68,68,0.3)'
             }}>
               ⚠️ {error}
             </div>
@@ -236,15 +221,13 @@ function Register() {
 
           {success && (
             <div style={{
-              background:
-                'rgba(212,175,55,0.1)',
+              background: 'rgba(212,175,55,0.1)',
               color: '#D4AF37',
               padding: '0.75rem 1rem',
               borderRadius: '8px',
               marginBottom: '1rem',
               fontSize: '0.9rem',
-              border:
-                '1px solid rgba(212,175,55,0.3)'
+              border: '1px solid rgba(212,175,55,0.3)'
             }}>
               ✅ {success}
             </div>
@@ -259,8 +242,7 @@ function Register() {
               padding: '0.85rem',
               background: '#222222',
               color: '#F5F5F0',
-              border:
-                '1.5px solid rgba(212,175,55,0.3)',
+              border: '1.5px solid rgba(212,175,55,0.3)',
               borderRadius: '50px',
               fontSize: '0.95rem',
               fontWeight: '600',
@@ -272,131 +254,68 @@ function Register() {
               marginBottom: '1.25rem'
             }}
           >
-            <span style={{
-              fontSize: '1.1rem',
-              fontWeight: '900',
-              color: '#D4AF37'
-            }}>
-              G
-            </span>
-            {googleLoading
-              ? 'Connecting...'
-              : 'Continue with Google'}
+            <span style={{ fontSize: '1.1rem', fontWeight: '900', color: '#D4AF37' }}>G</span>
+            {googleLoading ? 'Connecting...' : 'Continue with Google'}
           </button>
 
           {/* Divider */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.75rem',
-            marginBottom: '1.25rem'
-          }}>
-            <div style={{
-              flex: 1, height: '1px',
-              background:
-                'rgba(212,175,55,0.15)'
-            }} />
-            <span style={{
-              fontSize: '0.8rem',
-              color: '#555555'
-            }}>
-              or register with email
-            </span>
-            <div style={{
-              flex: 1, height: '1px',
-              background:
-                'rgba(212,175,55,0.15)'
-            }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem' }}>
+            <div style={{ flex: 1, height: '1px', background: 'rgba(212,175,55,0.15)' }} />
+            <span style={{ fontSize: '0.8rem', color: '#555555' }}>or register with email</span>
+            <div style={{ flex: 1, height: '1px', background: 'rgba(212,175,55,0.15)' }} />
           </div>
 
           {/* Form */}
           <form onSubmit={handleRegister}>
-
-            <div style={{
-              marginBottom: '1rem'
-            }}>
-              <label style={labelStyle}>
-                Full Name
-              </label>
+            <div style={{ marginBottom: '1rem' }}>
+              <label style={labelStyle}>Full Name</label>
               <input
                 type="text"
                 value={name}
-                onChange={(e) =>
-                  setName(e.target.value)}
+                onChange={(e) => setName(e.target.value)}
                 placeholder="Ahmad Raza"
                 style={inputStyle}
-                onFocus={(e) =>
-                  e.target.style.borderColor =
-                    '#D4AF37'}
-                onBlur={(e) =>
-                  e.target.style.borderColor =
-                    'rgba(212,175,55,0.2)'}
+                onFocus={(e) => e.target.style.borderColor = '#D4AF37'}
+                onBlur={(e) => e.target.style.borderColor = 'rgba(212,175,55,0.2)'}
               />
             </div>
 
-            <div style={{
-              marginBottom: '1rem'
-            }}>
-              <label style={labelStyle}>
-                Email Address
-              </label>
+            <div style={{ marginBottom: '1rem' }}>
+              <label style={labelStyle}>Email Address</label>
               <input
                 type="email"
                 value={email}
-                onChange={(e) =>
-                  setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 style={inputStyle}
-                onFocus={(e) =>
-                  e.target.style.borderColor =
-                    '#D4AF37'}
-                onBlur={(e) =>
-                  e.target.style.borderColor =
-                    'rgba(212,175,55,0.2)'}
+                onFocus={(e) => e.target.style.borderColor = '#D4AF37'}
+                onBlur={(e) => e.target.style.borderColor = 'rgba(212,175,55,0.2)'}
               />
             </div>
 
-            <div style={{
-              marginBottom: '1rem'
-            }}>
-              <label style={labelStyle}>
-                Password
-              </label>
+            <div style={{ marginBottom: '1rem' }}>
+              <label style={labelStyle}>Password</label>
               <input
                 type="password"
                 value={password}
-                onChange={(e) =>
-                  setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="Minimum 6 characters"
                 style={inputStyle}
-                onFocus={(e) =>
-                  e.target.style.borderColor =
-                    '#D4AF37'}
-                onBlur={(e) =>
-                  e.target.style.borderColor =
-                    'rgba(212,175,55,0.2)'}
+                onFocus={(e) => e.target.style.borderColor = '#D4AF37'}
+                onBlur={(e) => e.target.style.borderColor = 'rgba(212,175,55,0.2)'}
               />
             </div>
 
-            <div style={{
-              marginBottom: '1.5rem'
-            }}>
-              <label style={labelStyle}>
-                Confirm Password
-              </label>
+            <div style={{ marginBottom: '1.5rem' }}>
+              <label style={labelStyle}>Confirm Password</label>
               <input
                 type="password"
                 value={confirm}
-                onChange={(e) =>
-                  setConfirm(e.target.value)}
+                onChange={(e) => setConfirm(e.target.value)}
                 placeholder="Repeat your password"
                 style={inputStyle}
-                onFocus={(e) =>
-                  e.target.style.borderColor =
-                    '#D4AF37'}
-                onBlur={(e) =>
-                  e.target.style.borderColor =
-                    'rgba(212,175,55,0.2)'}
+                onFocus={(e) => e.target.style.borderColor = '#D4AF37'}
+                onBlur={(e) => e.target.style.borderColor = 'rgba(212,175,55,0.2)'}
               />
             </div>
 
@@ -414,67 +333,33 @@ function Register() {
                 borderRadius: '50px',
                 fontSize: '1rem',
                 fontWeight: '800',
-                cursor: loading
-                  ? 'not-allowed' : 'pointer'
+                cursor: loading ? 'not-allowed' : 'pointer'
               }}
             >
-              {loading
-                ? '⏳ Creating account...'
-                : 'Create Account'}
+              {loading ? '⏳ Creating account...' : 'Create Account'}
             </button>
-
           </form>
 
-          <p style={{
-            textAlign: 'center',
-            marginTop: '1.25rem',
-            fontSize: '0.9rem',
-            color: '#888888'
-          }}>
+          <p style={{ textAlign: 'center', marginTop: '1.25rem', fontSize: '0.9rem', color: '#888888' }}>
             Already have an account?{' '}
-            <Link to="/login" style={{
-              color: '#D4AF37',
-              fontWeight: '700',
-              textDecoration: 'none'
-            }}>
+            <Link to="/login" style={{ color: '#D4AF37', fontWeight: '700', textDecoration: 'none' }}>
               Sign in here
             </Link>
           </p>
 
-          <p style={{
-            textAlign: 'center',
-            marginTop: '0.75rem'
-          }}>
-            <Link to="/" style={{
-              color: '#555555',
-              fontSize: '0.85rem',
-              textDecoration: 'none'
-            }}>
+          <p style={{ textAlign: 'center', marginTop: '0.75rem' }}>
+            <Link to="/" style={{ color: '#555555', fontSize: '0.85rem', textDecoration: 'none' }}>
               ← Back to Home
             </Link>
           </p>
-
         </div>
 
-        <p style={{
-          textAlign: 'center',
-          color: '#555555',
-          fontSize: '0.75rem',
-          marginTop: '1.5rem'
-        }}>
-          RenoVision — Final Year Project |
-          Lahore Garrison University | BSCS 2024
+        <p style={{ textAlign: 'center', color: '#555555', fontSize: '0.75rem', marginTop: '1.5rem' }}>
+          RenoVision — Final Year Project | Lahore Garrison University | BSCS 2024
         </p>
-        <p style={{
-          textAlign: 'center',
-          color: '#D4AF37',
-          fontSize: '0.75rem',
-          marginTop: '0.25rem',
-          fontWeight: '600'
-        }}>
-          Made by Ahmad Raza & Tabeel John
+        <p style={{ textAlign: 'center', color: '#D4AF37', fontSize: '0.75rem', marginTop: '0.25rem', fontWeight: '600' }}>
+          Build by Ahmad Raza & Tabeel John
         </p>
-
       </div>
     </div>
   );
