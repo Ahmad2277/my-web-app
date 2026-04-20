@@ -375,7 +375,7 @@ export default function Landing() {
           BSCS 2026
         </p>
         <p className="footer-text">
-          Made by{' '}
+          Build by{' '}
           <span className="footer-gold">
             Ahmad Raza
           </span>

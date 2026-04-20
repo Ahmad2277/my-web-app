@@ -226,7 +226,7 @@ function Help() {
     Lahore Garrison University | BSCS 2026
     <br />
     <span style={{ color: '#D4AF37' }}>
-      Made by Ahmad Raza & Tabeel John
+      Build by Ahmad Raza & Tabeel John
     </span>
   </p>
 </footer>

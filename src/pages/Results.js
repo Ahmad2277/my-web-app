@@ -584,7 +584,7 @@ function Results() {
           <span style={{
             color: 'var(--gold)'
           }}>
-            Made by Ahmad Raza & Tabeel John
+            Build by Ahmad Raza & Tabeel John
           </span>
         </div>
 

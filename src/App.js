@@ -46,7 +46,7 @@ function App() {
       setBackendStatus('disconnected');
     }
   };
-
+  
   return (
     <Router>
 
@@ -63,21 +63,6 @@ function App() {
         }}>
           ⚠️ Backend is starting up...
           Please wait a moment and refresh.
-        </div>
-      )}
-
-      {backendStatus === 'connected' && (
-        <div style={{
-          background: 'rgba(212,175,55,0.05)',
-          color: '#D4AF37',
-          padding: '0.4rem 1rem',
-          textAlign: 'center',
-          fontSize: '0.8rem',
-          fontWeight: '500',
-          borderBottom:
-            '1px solid rgba(212,175,55,0.15)'
-        }}>
-          ✅ RenoVision AI is ready
         </div>
       )}
 
